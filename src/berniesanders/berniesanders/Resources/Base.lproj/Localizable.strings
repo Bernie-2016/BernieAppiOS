@@ -40,8 +40,10 @@
 "Events_eventAttendeeWithoutCapacityLimitLabel" = "%d attending";
 "Events_noEventsFound" = "No events match your search";
 "Events_zipCodeTextBoxPlaceholder" = "ZIP Code";
+"Events_zipCodeRadiusButtonPlaceholder" = "Radius";
 "Events_eventSearchButtonTitle" = "Search";
 "Events_eventCancelButtonTitle" = "Cancel";
+"Events_eventCloseButtonTitle" = "Close";
 "Events_instructions" = "Enter your ZIP code above to find Bernie events near you!";
 
 // Event
