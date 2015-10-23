@@ -253,11 +253,9 @@ class EventsControllerSpec : QuickSpec {
 
             it("has an input accessory view for the zip code entry field") {
                 let inputToolbar = self.subject.zipCodeTextField.inputAccessoryView as! UIToolbar
-                let doneButton = inputToolbar.items![1]
-                let cancelButton = inputToolbar.items![2]
+                let cancelButton = inputToolbar.items![1]
 
-                expect(doneButton.title).to(equal("Search"))
-                expect(cancelButton.title).to(equal("Cancel"))
+                expect(cancelButton.title).to(equal("Close"))
             }
 
                 context("when entering a valid zip code") {
@@ -295,8 +293,7 @@ class EventsControllerSpec : QuickSpec {
 
                     describe("and then tapping search") {
                         beforeEach {
-                            let inputToolbar = self.subject.zipCodeTextField.inputAccessoryView as! UIToolbar
-                            let doneButton = inputToolbar.items![1]
+                            let doneButton = self.subject.zipCodeSearchButton
                             doneButton.tap()
                         }
 

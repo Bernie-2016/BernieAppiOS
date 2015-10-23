@@ -24,7 +24,7 @@ class EventsController: UIViewController, UITableViewDataSource, UITableViewDele
     var events: Array<Event>!
     
     var zipCodeRadiusFilterData = [5, 10, 20, 50, 100, 250];
-    var selectedZipCodeRadius:Int!;
+    var selectedZipCodeRadius:Int! = 250;
     var zipCodeModalPicker:ModalUIPickerView!;
 
     init(eventRepository: EventRepository,
@@ -151,10 +151,12 @@ class EventsController: UIViewController, UITableViewDataSource, UITableViewDele
     
     func selectRadiusForFilter(sender:UIButton!)
     {
+        if(self.zipCodeModalPicker == nil)
+        {
         self.zipCodeModalPicker = ModalUIPickerView(pickerDataSource: self, pickerDelegate: self, backgroundColor: self.theme.eventsZipCodeBackgroundColor(), accentColor: self.theme.eventsInputAccessoryBackgroundColor())
         
-        self.zipCodeModalPicker.open(self.zipCodeRadiusSelected);
-        
+        self.zipCodeModalPicker.open(self.zipCodeRadiusSelected, cancelFunctionToExecute: self.zipCodeRadiusWasCancelled)
+        }
     }
 
     func didTapSettings() {
@@ -200,6 +202,13 @@ class EventsController: UIViewController, UITableViewDataSource, UITableViewDele
     {
         self.selectedZipCodeRadius = self.zipCodeRadiusFilterData[rowSelected];
         self.zipCodeRadiusButton.setTitle(String(self.selectedZipCodeRadius) + " Miles", forState: .Normal);
+        
+        self.zipCodeModalPicker = nil;
+    }
+    
+    func zipCodeRadiusWasCancelled()
+    {
+        self.zipCodeModalPicker = nil;
     }
 
     // MARK: Private

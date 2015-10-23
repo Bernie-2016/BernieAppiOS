@@ -12,7 +12,8 @@ class ModalUIPickerView: UIView {
 
     var pickerView:UIPickerView = UIPickerView();
     var currentWindow:UIWindow? = nil
-    var callToExecuteOnClose:((Int)->())!; // variable to store our data return function;
+    var callToExecuteOnClose:((Int)->())! // variable to store our data return function;
+    var callToExecuteOnCancel:(()->())!
     
     init(pickerDataSource:UIPickerViewDataSource, pickerDelegate:UIPickerViewDelegate, backgroundColor:UIColor = UIColor.whiteColor(), accentColor:UIColor = UIColor.blackColor())
     {
@@ -85,13 +86,14 @@ class ModalUIPickerView: UIView {
         
     }
     
-    func open(closeFunctionToExecute:(Int)->())
+    func open(closeFunctionToExecute:(Int)->(), cancelFunctionToExecute:()->())
     {
         if (currentWindow != nil) {
             self.currentWindow!.addSubview(self)
         }
         
         self.callToExecuteOnClose = closeFunctionToExecute;
+        self.callToExecuteOnCancel = cancelFunctionToExecute;
         
         UIView.animateWithDuration(0.2, animations: {
             
@@ -113,6 +115,10 @@ class ModalUIPickerView: UIView {
                         view.removeFromSuperview()
                     }
                 }
+                
+                self.removeFromSuperview();
+                self.callToExecuteOnCancel();
+                
         })
     }
     func doneClicked(sender: UIBarButtonItem) {
@@ -120,7 +126,6 @@ class ModalUIPickerView: UIView {
         
         let myRow = pickerView.selectedRowInComponent(0)
         
-        self.callToExecuteOnClose(myRow);
         
         UIView.animateWithDuration(0.2, animations: {
             
@@ -132,7 +137,12 @@ class ModalUIPickerView: UIView {
                     {
                         view.removeFromSuperview()
                     }
+
                 }
+                
+                self.callToExecuteOnClose(myRow);
+                self.removeFromSuperview();
+
         })
     }
 }
