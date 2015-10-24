@@ -38,9 +38,9 @@ class ConcreteEventRepository: EventRepository {
                 location.coordinate.latitude,
                 longitude: location.coordinate.longitude,
                 radiusMiles: radiusMiles)
-
+            
             let eventsPromise = self.jsonClient.JSONPromiseWithURL(url, method: "POST", bodyDictionary: HTTPBodyDictionary)
-
+            
             eventsPromise.then({ (deserializedObject) -> AnyObject! in
                 guard let jsonDictionary = deserializedObject as? NSDictionary else {
                     let incorrectObjectTypeError = NSError(domain: "ConcreteEventRepository", code: -1, userInfo: nil)
@@ -64,6 +64,25 @@ class ConcreteEventRepository: EventRepository {
 
     func HTTPBodyDictionaryWithLatitude(latitude: CLLocationDegrees, longitude: CLLocationDegrees, radiusMiles: Float) -> NSDictionary {
         return [
+            "sort": [
+                
+                [
+                "event_date" : [
+                    "order" : "asc"
+                ]],
+                
+                ["_geo_distance": [
+                    "location": [
+                        "lat":  latitude,
+                        "lon": longitude
+                    ],
+                    "order":         "asc",
+                    "unit":          "mi",
+                    "distance_type": "plane"
+                ]
+                    ]
+            ],
+
             "from": 0, "size": 30,
             "query": [
                 "filtered": [
@@ -76,37 +95,27 @@ class ConcreteEventRepository: EventRepository {
                         ]
                     ]
                 ]
-            ],
-            "sort": [
-                "_geo_distance": [
-                    "location": [
-                        "lat":  latitude,
-                        "lon": longitude
-                    ],
-                    "order":         "asc",
-                    "unit":          "km",
-                    "distance_type": "plane"
-                ]
             ]
+
         ]
     }
 
     func filterConditions(latitude: CLLocationDegrees, longitude: CLLocationDegrees, radiusMiles: Float) -> Array<AnyObject> {
         return [
             [
+                "range": [
+                    "event_date": [
+                        "lte": "now+6M/d",
+                        "gte": "now"
+                    ]
+                ]
+            ],
+            [
                 "geo_distance": [
                     "distance": "\(radiusMiles)mi",
                     "location": [
                         "lat": latitude,
                         "lon": longitude
-                    ]
-                ]
-            ],
-            [
-                "range": [
-                    "start_time": [
-                        "lte": "now+6M/d",
-                        "gte": "now"
                     ]
                 ]
             ]
