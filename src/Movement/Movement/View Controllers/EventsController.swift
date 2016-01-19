@@ -134,6 +134,15 @@ class EventsController: UIViewController, CLLocationManagerDelegate {
 
     func didTapSearch(sender: UIButton!) {
         let enteredZipCode = self.zipCodeTextField.text!
+        
+        //Do zip code validation here
+        let zipCodeValidation = ZipCodeValidator()
+        let validationRtn = zipCodeValidation.validate(enteredZipCode)
+        
+        if (validationRtn == false){
+            return
+        }
+
         self.analyticsService.trackSearchWithQuery(enteredZipCode, context: .Events)
 
         self.searchButton.hidden = true
