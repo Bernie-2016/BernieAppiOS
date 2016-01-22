@@ -11,7 +11,6 @@ import XCTest
 
 
 class ZipCodeValidatorTest: XCTestCase {
-    
 
     override func setUp() {
         super.setUp()
@@ -27,6 +26,24 @@ class ZipCodeValidatorTest: XCTestCase {
         let testValidator = ZipCodeValidator();
         XCTAssertTrue(testValidator.validate("12345"))
     }
+    
+    func testThatBlankZipCodeReturnsFalse(){
+        let testValidator = ZipCodeValidator();
+        XCTAssertFalse(testValidator.validate(""))
+    }
+    
+    func testNonNumbericInZipCodeReturnsFalse(){
+        let testValidator = ZipCodeValidator();
+        XCTAssertFalse(testValidator.validate("123@5"))
+    }
+    
+    func testThatLengthOfZipCodeIsFive(){
+        let testValidator = ZipCodeValidator();
+        XCTAssertFalse(testValidator.validate("1234"))
+    }
+
+
+
     
     
 }
