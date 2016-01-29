@@ -296,6 +296,7 @@ class EventsController: UIViewController, CLLocationManagerDelegate {
         zipCodeTextField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Events_zipCodeTextBoxPlaceholder",  comment: ""),
             attributes:[NSForegroundColorAttributeName: self.theme.eventsZipCodeTextColor()])
         zipCodeTextField.keyboardType = .NumberPad
+        zipCodeTextField.accessibilityLabel = NSLocalizedString("ZIP code", comment: "");
 
         searchButton.setTitle(NSLocalizedString("Events_eventSearchButtonTitle", comment: ""), forState: .Normal)
         searchButton.hidden = true
